@@ -1,0 +1,33 @@
+<%- include("partials/header.ejs") -%>
+
+<% if (typeof message != 'undefined' && message.length > 0) { %>
+<div class="alert alert-danger" role="alert"><%- message %></div>
+<% } %>
+<div class="row">
+  <div class="col-md-4 col-sm-3">
+  </div>
+  <div class="col-md-4 col-sm-6">
+    <div class="register-top">
+      <h2>Create an account</h2>
+      <hr>
+    </div>
+
+    <form class="auth-form" action="/register" method="post">
+      <label for="exampleFormControlInput1" class="form-label">Email address:</label>
+      <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" required>
+      <label class="form-label">Username:</label>
+      <input class="form-control username-input" name="username" type="text" placeholder="Enter your username" minlength="4" maxlength="16" required>
+      <p class="err-message user-err-message"></p>
+      <label class="form-label">Password:</label>
+      <input type="password" name="password" class="form-control" minlength="8" placeholder="Password must contain at least 8 characters" required>
+      <label class="form-label">Confirm Password:</label>
+      <input type="password" name="confirmPassword" class="form-control" placeholder="Enter your password again">
+      <div class="auth-buttons">
+        <button type="submit" class="btn btn-primary submit-button">Sign Up</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4 col-sm-3">
+  </div>
+</div>
+<%- include("partials/footer.ejs") -%>

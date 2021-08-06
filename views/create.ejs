@@ -1,0 +1,99 @@
+<%- include("partials/header.ejs") -%>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<div class="row">
+  <div class="col-md-3">
+  </div>
+  <div class="col-md-6">
+    <div class="inner-top">
+      <h2>Upload your audio</h2>
+      <hr>
+      <form id="uploadForm" class="" action="/create" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input type="text" name="title" class="form-control" maxlength="60" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" rows="3" maxlength="240" required></textarea>
+        </div>
+        <div class="mb-3">
+          <input type="file" name="audio" class="form-control-file file-upload" accept=".mp3, .wav" required>
+          <div class="form-text">Upload a .mp3 or .wav file</div>
+          <div class="invalid-feedback">Max file size is 5mb</div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="mb-3">
+              <select class="form-select form-select-sm mb-3" name="instrument" aria-label=".form-select-lg example" required>
+                <option selected disabled>Instrument</option>
+                <% instruments.forEach(instrument => { %>
+                <option value="<%= instrument %>"><%= instrument %></option>
+                <%})%>
+              </select>
+            </div>
+            <div class="mb-3">
+              <select class="form-select form-select-sm mb-3" name="genre" aria-label=".form-select-lg example" required>
+                <option selected disabled>Genre</option>
+                <% genres.forEach(genre => { %>
+                <option value="<%= genre %>"><%= genre %></option>
+                <%})%>
+              </select>
+            </div>
+            <div class="mb-3">
+              <select class="form-select form-select-sm mb-3" name="key" aria-label=".form-select-lg example" required>
+                <option selected disabled>Key</option>
+
+                <% keysList.forEach(key => { %>
+                <option value="<%= key %>"><%= key %></option>
+                <%})%>
+
+              </select>
+            </div>
+            <div class="mb-3">
+              <input type="number" name="tempo" class="form-control" placeholder="Tempo" min="40" max="240" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked required>
+          <label class="form-check-label" for="flexCheckChecked">
+            I accept the <a href="/help#terms-and-conditions">terms and conditions</a>
+          </label>
+        </div>
+        <div class="g-recaptcha" data-sitekey="<%= siteKey %>"></div>
+        <div id="captcha-invalid" class="hide">
+          Please complete the captcha.
+        </div>
+        <button type="submit" class="btn btn-primary upload-btn">Submit</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-3">
+  </div>
+</div>
+<script>
+  document.getElementById('uploadForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const captcha = document.querySelector('#g-recaptcha-response').value;
+    return fetch('/verify-captcha', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          captcha
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.success) {
+          document.getElementById('uploadForm').submit();
+        } else if (!data.success) {
+          document.getElementById('captcha-invalid').classList.remove('hide')
+        }
+      });
+  });
+</script>
+
+<%- include("partials/footer.ejs") -%>

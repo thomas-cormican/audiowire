@@ -1,0 +1,94 @@
+<%- include("partials/header.ejs") -%>
+
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <div class="inner-top">
+      <section id="guidelines">
+        <h2>Guidelines for Uploading</h2>
+        <hr>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Make sure the audio is able to loop (as seamlessly as possible) by trimming it
+            so there is no silence at the end.</li>
+          <li class="list-group-item">Loops must be of high quality without any clicks, artifacts etc. unless made
+            clear in the title or description that it is for aesthetic purposes.</li>
+          <li class="list-group-item">Uploaded files must be .mp3 or .wav format.</li>
+          <li class="list-group-item">The max file size for uploads is 5mb, this should be sufficient as loops should
+            be no more than 30 seconds or a minute long at max. If your file is still too
+            large to upload you may have to change your export settings to reduce the
+            quality.</li>
+          <li class="list-group-item">Loops must be created by the user and not ripped from other sources,
+            by uploading to this site you agree to let others download your loops for free.</li>
+          <li class="list-group-item">The title and description of uploads must be kept in English and they must
+            not contain any profanities.</li>
+          <li class="list-group-item">Always try to provide details such as the key, instrument or genre but if you
+            are unable to the fields may be left blank.</li>
+          <li class="list-group-item">Any loops that fail to reach this criteria will be removed. You will then
+            receive an email outlining the problems with your upload. you are free to
+            upload the loop again once the problems have been resolved.</li>
+        </ul>
+      </section>
+      <section id="terms-and-conditions">
+        <h2>Terms and Conditions</h2>
+        <hr>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">You agree that all audio uploaded is your own work.</li>
+          <li class="list-group-item">You acknowledge that your loops are free for anyone to download and use.</li>
+          <li class="list-group-item">You agree to treat other users with respect and refrain from posting any
+            inappropriate content.</li>
+          <li class="list-group-item">We are not responsible for how others may use your loops.</li>
+          <li class="list-group-item">We reserve the right to remove any content created by the user if it does not
+            adhere to our stated guidelines.</li>
+          <li class="list-group-item">You acknowledge that we will store your provided details such as your email,
+            username and uploaded content. Your username will be made public but your
+            email will be kept confidential at all times.</li>
+          <li class="list-group-item">We may send you emails regarding any updates or problems with your account or
+            uploaded content.</li>
+          <li class="list-group-item">This website is free to use and all audio loops are free to download.</li>
+          <li class="list-group-item">We may issue a warning to any user if we find them to be in breach
+            of our terms of service. Repeated failure to comply may result in a suspension
+            or termination of your account.</li>
+          <li class="list-group-item">You may request a copy of any content that we have stored related to your
+            account.</li>
+          <li class="list-group-item">You may request that we delete your account and remove all content related to
+            it.</li>
+        </ul>
+      </section>
+      <section id="contact-us">
+        <h2>Contact Us</h2>
+        <hr>
+        <form class="contact-form" action="/help" method="post">
+          <div class="mb-3">
+            <input type="email" class="form-control contact-email" placeholder="Email address" required>
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control contact-subject" placeholder="Subject" required>
+          </div>
+          <div class="mb-3">
+            <textarea class="form-control contact-message" rows="5" placeholder="Your Message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary contact-button">Send</button>
+        </form>
+      </section>
+    </div>
+  </div>
+  <div class="col-md-2">
+  </div>
+</div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="/images/icons/favicon-16x16.png" class="rounded me-2" alt="...">
+      <strong class="me-auto">Audiowire</strong>
+      <small>Just now</small>
+    </div>
+    <div class="toast-body">
+      Message sent, we will be in contact shortly.
+    </div>
+  </div>
+</div>
+
+
+<%- include("partials/footer.ejs") -%>

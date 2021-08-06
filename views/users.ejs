@@ -1,0 +1,41 @@
+<%- include("partials/header.ejs") -%>
+
+<div class="row">
+  <div class="col-md-3">
+  </div>
+  <div class="col-md-6">
+    <div class="inner-top">
+      <h2>Search users by name</h2>
+      <hr>
+      <form class="" action="/users" method="post">
+        <input type="text" name="searchedName" class="form-control" value="" placeholder="Enter Username">
+        <div class="user-search-button">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+      <% if(foundUsers){ %>
+      <% foundUsers.forEach(foundUser =>{ %>
+      <a class="user-search-link" href="/profile/<%= foundUser._id %>">
+        <div class="user-search-container">
+          <% if(foundUser.bot === true){ %>
+          <img class="user-search-image" src="<%= foundUser.profilePic %>" height="100" width="100" />
+          <% } else { %>
+          <img class="user-search-image" src="/profile-pics/<%= foundUser.profilePic %>" height="100" width="100" />
+          <% } %>
+          <p class="user-search-username">
+            <%= foundUser.username %>
+          </p>
+          <p class="user-search-bio">
+            <%= foundUser.bio %>
+          </p>
+        </div>
+      </a>
+      <% }) %>
+      <%}%>
+        </div>
+  </div>
+  <div class="col-md-3">
+  </div>
+</div>
+
+<%- include("partials/footer.ejs") -%>

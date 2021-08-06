@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- favicons -->
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <title>Audiowire</title>
+</head>
+
+<body>
+  <div class="double-nav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="/"><img height=50 width=50 src="/images/wire.png" />Audiowire</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+            <% if(!req.user){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Log In</a>
+            </li>
+            <% } else if(req.user){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/<%= req.user._id %>">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Log Out</a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/loops">Loops</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="/create">Upload</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="/help">Help</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div class="container main-container">

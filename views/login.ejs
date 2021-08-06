@@ -1,0 +1,37 @@
+<%- include("partials/header.ejs") -%>
+
+<% if (typeof message != 'undefined' && message.length > 0) { %>
+<div class="alert alert-danger" role="alert"><%- message %></div>
+<% } %>
+
+<div class="row">
+  <div class="col-md-4 col-sm-3">
+  </div>
+  <div class="col-md-4 col-sm-6">
+    <div class="login-top">
+      <div class="logo-container">
+        <img src="/images/wire-purple.png" height="50" width="50" alt="">
+      </div>
+      <h2>Please Log in</h2>
+      <hr>
+    </div>
+    <form class="auth-form" action="/login" method="post">
+      <div>
+        <label class="form-label">Username:</label>
+        <input type="text" class="form-control" name="username" placeholder="Enter Username" />
+      </div>
+      <div>
+        <label class="form-label">Password:</label>
+        <input type="password" class="form-control" placeholder="Enter Password" name="password" />
+      </div>
+      <div class="auth-buttons">
+        <button type="submit" class="btn btn-primary">Log In</button>
+        <p>Don't have an account? <a href="/register">Sign up</a></p>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-4 col-sm-3">
+  </div>
+</div>
+
+<%- include("partials/footer.ejs") -%>

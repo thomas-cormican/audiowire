@@ -1,0 +1,131 @@
+<%- include("partials/header.ejs") -%>
+
+<div class="profile-head">
+  <% if (user.bot === true){ %>
+  <img class="profile-pic" src="<%= user.profilePic %>" alt="">
+  <% } else { %>
+  <img class="profile-pic" src="/profile-pics/<%= user.profilePic %>" alt="">
+  <% } %>
+  <h2><%= user.username %></h2>
+  <% if(!user.bio && req.user && req.user.id == user._id){ %>
+  <p>Go to update profile to add your bio</p>
+  <%} else {%>
+  <p><%= user.bio %></p>
+  <%}%>
+  <% if(req.user && req.user.id == user._id){ %>
+  <a class="update-profile-link" href="/updateprofile/<%= user._id %>"><button class="btn btn-light"><svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px" height="20px">
+        <path
+          d="M 18.414062 2 C 18.158062 2 17.902031 2.0979687 17.707031 2.2929688 L 15.707031 4.2929688 L 14.292969 5.7070312 L 3 17 L 3 21 L 7 21 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.926094 2.0979687 18.670063 2 18.414062 2 z M 18.414062 4.4140625 L 19.585938 5.5859375 L 18.292969 6.8789062 L 17.121094 5.7070312 L 18.414062 4.4140625 z M 15.707031 7.1210938 L 16.878906 8.2929688 L 6.171875 19 L 5 19 L 5 17.828125 L 15.707031 7.1210938 z" />
+      </svg> Update Profile</button></a>
+  <%}%>
+</div>
+<div class="row">
+  <div class="col-md-2">
+  </div>
+  <div class="col-md-8">
+    <% if(posts.length === 0 && req.user && req.user.id == user._id) { %>
+  <p class="center">
+    No loops yet, why not <a href="/create">create</a> one now?
+  </p>
+  <% } else if(posts.length === 0) { %>
+  <p class="center">
+    This user has no loops yet
+  </p>
+  <%}%>
+  <% for (let i = 0; i < posts.length; i++) { %>
+  <% var id = posts[i]._id %>
+  <div class="shadow post-container">
+    <div class="waveform" id="waveform<%= id %>"></div>
+    <div class="time-container" id="waveform-time-indicator<%= id %>">
+      <span class="time<%= id %>">00:00</span>
+    </div>
+    <div class="time-container-full" id="waveform-time-indicator<%= id %>">
+      <span class="time-full<%= id %>">00:00</span>
+    </div>
+
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function(event) {
+        createAudioPlayer("<%= id %>", "<%= posts[i].file %>")
+      });
+    </script>
+
+    <div class='info-box'>
+      <img class='waveform<%= id %>-button play-button' src='/images/play.png' />
+      <p class='song-title'><%= posts[i].title %></p>
+      <p class="loop-info">BPM: <%= posts[i].tempo %> | Key: <%= posts[i].key %> | Instrument: <%= posts[i].instrument %> | Genre: <%= posts[i].genre %> | Likes: <span class='like-count like-count-<%= id %>'>
+          <%= posts[i].likes.length %></span></p>
+      <p class="loop-description"><%=posts[i].description %></p>
+    </div>
+
+    <% if(req.user){ %>
+    <form class='like-form like-form-<%= id %>' method="post">
+      <% if(!posts[i].likes.includes(req.user.id)){ %>
+      <input class="user-id-input" type="hidden" value="<%= req.user.id %>" name="userId" />
+      <input class="post-id-input-<%= id %>" type="hidden" value="<%= id %>" name="postId" />
+      <button type="submit" class="btn btn-light like-button-<%= id %>"><img src="/images/like.png" height=25 width=25 /></button>
+      <%} else {%>
+      <input class="user-id-input" type="hidden" value="<%= req.user.id %>" name="userId" />
+      <input class="post-id-input-<%= id %>" type="hidden" value="<%= id %>" name="postId" />
+      <button type="submit" class="btn btn-light dislike-button-<%= id %>"><img src="/images/like-filled.png" height=25 width=25 /></button>
+      <%}%>
+    </form>
+
+  <script language="javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+  addLike("<%= id %>");
+      });
+      </script>
+
+      <% if(req.user.id == user._id){ %>
+      <!-- Button trigger modal -->
+      <button ype="button" class="btn btn-danger delete-button" data-bs-toggle="modal" data-bs-target="#exampleModal"><svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 50 50" width="25px" height="25px">
+          <path
+            d="M 21 2 C 19.354545 2 18 3.3545455 18 5 L 18 7 L 10.154297 7 A 1.0001 1.0001 0 0 0 9.984375 6.9863281 A 1.0001 1.0001 0 0 0 9.8398438 7 L 8 7 A 1.0001 1.0001 0 1 0 8 9 L 9 9 L 9 45 C 9 46.645455 10.354545 48 12 48 L 38 48 C 39.645455 48 41 46.645455 41 45 L 41 9 L 42 9 A 1.0001 1.0001 0 1 0 42 7 L 40.167969 7 A 1.0001 1.0001 0 0 0 39.841797 7 L 32 7 L 32 5 C 32 3.3545455 30.645455 2 29 2 L 21 2 z M 21 4 L 29 4 C 29.554545 4 30 4.4454545 30 5 L 30 7 L 20 7 L 20 5 C 20 4.4454545 20.445455 4 21 4 z M 11 9 L 18.832031 9 A 1.0001 1.0001 0 0 0 19.158203 9 L 30.832031 9 A 1.0001 1.0001 0 0 0 31.158203 9 L 39 9 L 39 45 C 39 45.554545 38.554545 46 38 46 L 12 46 C 11.445455 46 11 45.554545 11 45 L 11 9 z M 18.984375 13.986328 A 1.0001 1.0001 0 0 0 18 15 L 18 40 A 1.0001 1.0001 0 1 0 20 40 L 20 15 A 1.0001 1.0001 0 0 0 18.984375 13.986328 z M 24.984375 13.986328 A 1.0001 1.0001 0 0 0 24 15 L 24 40 A 1.0001 1.0001 0 1 0 26 40 L 26 15 A 1.0001 1.0001 0 0 0 24.984375 13.986328 z M 30.984375 13.986328 A 1.0001 1.0001 0 0 0 30 15 L 30 40 A 1.0001 1.0001 0 1 0 32 40 L 32 15 A 1.0001 1.0001 0 0 0 30.984375 13.986328 z" />
+        </svg></button>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Are you sure you want to delete this post?
+            </div>
+            <div class="modal-footer">
+              <form class="delete-form" action="/delete" method="post">
+                <input type="hidden" name="postId" value="<%= id %>">
+                <input type="hidden" name="postUserId" value="<%= posts[i].createdById %>">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="submit" class="btn btn-danger">Yes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <%}%>
+      <%}%>
+      <a class='download-link' href='/uploads/<%= posts[i].file %>' download><img src='/images/download.png' class='download-button' /></a>
+  </div>
+  <%}%>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+    <% if(currentPage != 0 ){ %>
+  <li class="page-item">
+    <a class="page-link" href="/profile/<%= user._id %>/<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+  </li>
+  <%}%>
+    <% if(fullLength > 10*(currentPage + 1)){ %>
+  <li class="page-item">
+    <a class="page-link" href="/profile/<%= user._id %>/<%= currentPage + 1 %>">Next</a>
+  </li>
+  <%}%>
+    </ul>
+  </nav>
+  </div>
+  <div class="col-md-2">
+  </div>
+</div>
+
+<%- include("partials/footer.ejs") -%>

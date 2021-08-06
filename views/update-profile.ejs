@@ -1,0 +1,32 @@
+<%- include("partials/header.ejs") -%>
+<div class="row">
+  <div class="col-md-3">
+
+  </div>
+  <div class="col-md-6">
+    <div class="inner-top">
+      <h2>Update profile</h2>
+      <hr>
+    </div>
+    <form class="update-profile-form" action="/updateprofile/<%= req.user.id %>" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label" for="">Update profile picture:</label>
+        <input class="form-control" type="file" name="profilePic" accept=".jpg, .png" value="">
+      </div>
+      <input type="hidden" name="currentPic" value="<%= req.user.profilePic %>">
+      <div class="mb-3">
+        <label class="form-label" for="">Update bio:</label>
+        <textarea class="form-control" name="bio" maxlength="300" rows="8" cols="80"><%= req.user.bio %></textarea>
+      </div>
+      <div class="mb-3">
+        <button type="submit" name="button" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-3">
+
+  </div>
+
+</div>
+
+<%- include("partials/footer.ejs") -%>

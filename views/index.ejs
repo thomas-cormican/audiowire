@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- favicons -->
+  <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" href="/images/icons/favicon-32x32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="/images/icons/favicon-16x16.png" sizes="16x16" type="image/png">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+  <title>Audiowire</title>
+</head>
+
+<body>
+  <div class="double-nav">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container index">
+        <a class="navbar-brand" href="/"><img height=50 width=50 src="/images/wire.png" />Audiowire</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto">
+            <% if(!req.user){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Log In</a>
+            </li>
+            <% } else if(req.user){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile/<%= req.user._id %>">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Log Out</a>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <div class="collapse navbar-collapse" id="">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/loops">Loops</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/users">Users</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="/create">Upload</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="/help">Help</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div class="title-container">
+    <div class="shadow title-background">
+    </div>
+    <div class="container">
+      <div class="title-section">
+        <h1 class="welcome-head">Welcome to Audiowire</h1>
+        <h3 class="welcome-message">Find the sound you need</h3>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container index">
+    <div class="row index-row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div class="inner-top">
+
+
+        </div>
+        <div class="index-section">
+          <h5>Check out our <a href="/loops">loops</a> section to search for the sound you're looking for based off a wide variety of parameters</h5>
+          <h5>Or <a href="/register">Sign up</a> to start <a href="/create">creating</a> and sharing your loops</h5>
+        </div>
+        <hr>
+        <div class="index-section">
+          <h6>Most Recent Post</h6>
+          <% for (let i = 0; i < posts.length; i++) { %>
+          <% var id = posts[i]._id %>
+          <div class="shadow post-container">
+            <div class="waveform" id="waveform<%= id %>"></div>
+            <div class="time-container" id="waveform-time-indicator<%= id %>">
+              <span class="time<%= id %>">00:00</span>
+            </div>
+            <div class="time-container-full" id="waveform-time-indicator<%= id %>">
+              <span class="time-full<%= id %>">00:00</span>
+            </div>
+
+            <script type="text/javascript">
+              document.addEventListener("DOMContentLoaded", function(event) {
+                createAudioPlayer("<%= id %>", "<%= posts[i].file %>")
+              });
+            </script>
+
+            <div class='info-box'>
+              <img class='waveform<%= id %>-button play-button' src='/images/play.png' />
+              <p class='song-title'><%= posts[i].title %></p>
+              <p class="loop-info">Created By: <a href="/profile/<%= posts[i].createdById %>"><%= posts[i].createdByUsername%></a></a> | BPM: <%= posts[i].tempo %> | Key: <%= posts[i].key %> | Instrument: <%= posts[i].instrument %> | Genre:
+                <%= posts[i].genre %> | Likes: <span class='like-count like-count-<%= id %>'>
+                  <%= posts[i].likes.length %></span></p>
+              <p class="loop-description"><%=posts[i].description %></p>
+            </div>
+
+            <% if(req.user){ %>
+            <form class='like-form like-form-<%= id %>' method="post">
+              <% if(!posts[i].likes.includes(req.user.id)){ %>
+              <input class="user-id-input" type="hidden" value="<%= req.user.id %>" name="userId" />
+              <input class="post-id-input-<%= id %>" type="hidden" value="<%= id %>" name="postId" />
+              <button type="submit" class="btn btn-light like-button-<%= id %>"><img src="/images/like.png" height=25 width=25 /></button>
+              <%} else {%>
+              <input class="user-id-input" type="hidden" value="<%= req.user.id %>" name="userId" />
+              <input class="post-id-input-<%= id %>" type="hidden" value="<%= id %>" name="postId" />
+              <button type="submit" class="btn btn-light dislike-button-<%= id %>"><img src="/images/like-filled.png" height=25 width=25 /></button>
+              <%}%>
+            </form>
+
+          <script language="javascript">
+          document.addEventListener("DOMContentLoaded", function(event) {
+          addLike("<%= id %>");
+              });
+              </script>
+
+              <%}%>
+              <a class='download-link' href='/uploads/<%= posts[i].file %>' download><img src='/images/download.png' class='download-button' /></a>
+          </div>
+          <%}%>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+  </div>
+</div>
+
+<%- include("partials/footer.ejs") -%>
